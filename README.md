@@ -1,11 +1,7 @@
-# glucomed
+# Gluco Med
 
-A new Flutter module project.
+A new project.
 
 ## Getting Started
 
-For help getting started with Flutter development, view the online
-[documentation](https://flutter.dev/).
-
-For instructions integrating Flutter modules to your existing applications,
-see the [add-to-app documentation](https://flutter.dev/docs/development/add-to-app).
+Descubre Gluco Med: tu aliado en el manejo de la diabetes y la salud clínica. Ofrecemos una aplicación que te proporciona consejos prácticos, seguimiento de glucosa, planificación de comidas y ejercicios, todo para mantener tus niveles de azúcar bajo control. Conéctate con las mejores clínicas y hospitales para acceder a atención médica de calidad. Únete a nuestra comunidad y mejora tu bienestar con Gluco Med. ¡Bienvenido a un futuro más saludable!
