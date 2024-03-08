@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart' show timeDilation;
-import 'package:flutter¿/flutter_login.dart';
-import 'package:flutter_login_example/constants.dart';
-import 'package:flutter_login_example/custom_route.dart';
-import 'package:flutter_login_example/dashboard_screen.dart';
-import 'package:flutter/users.dart';
+import 'package:flutter_login/flutter_login.dart';
+import 'package:glucomed/constants.dart';
+import 'package:glucomed/custom_route.dart';
+import 'package:glucomed/dashboard_screen.dart';
+import 'package:glucomed/users.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class LoginScreen extends StatelessWidget {

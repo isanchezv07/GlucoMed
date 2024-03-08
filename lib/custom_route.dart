@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/login_screen.dart'
 
-import 'package:flutter/login_screen.dart';
+import 'package:glucomed/login_screen.dart';
 
 class FadePageRoute<T> extends MaterialPageRoute<T> {
   FadePageRoute({
