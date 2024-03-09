@@ -1,7 +1,5 @@
 // ignore_for_file: depend_on_referenced_packages
 
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart' show timeDilation;
 import 'package:flutter_login/flutter_login.dart';
@@ -10,7 +8,6 @@ import 'package:glucomed/custom_route.dart';
 import 'package:glucomed/dashboard_screen.dart';
 import 'package:glucomed/users.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:path_provider/path_provider.dart';
 
 class LoginScreen extends StatelessWidget {
   static const routeName = '/auth';
@@ -63,35 +60,15 @@ class LoginScreen extends StatelessWidget {
       onConfirmRecover: _signupConfirm,
       onConfirmSignup: _signupConfirm,
       loginAfterSignUp: false,
-      loginProviders: [
-        LoginProvider(
-          button: Buttons.linkedIn,
-          label: 'Sign in with LinkedIn',
-          callback: () async {
-            return null;
-          },
-          providerNeedsSignUpCallback: () {
-            // put here your logic to conditionally show the additional fields
-            return Future.value(true);
-          },
-        ),
-        LoginProvider(
-          icon: FontAwesomeIcons.google,
-          label: 'Google',
-          callback: () async {
-            return null;
-          },
-        ),
-        LoginProvider(
-          icon: FontAwesomeIcons.githubAlt,
-          callback: () async {
-            debugPrint('start github sign in');
-            await Future.delayed(loginTime);
-            debugPrint('stop github sign in');
-            return null;
-          },
-        ),
-      ],
+      //loginProviders: [
+      //  LoginProvider(
+      //    icon: FontAwesomeIcons.google,
+      //    label: 'Google',
+      //    callback: () async {
+      //      return null;
+      //    },
+      //  ),
+      //],
       termsOfService: [
         TermOfService(
           id: 'newsletter',

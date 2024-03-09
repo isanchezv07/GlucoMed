@@ -1,12 +1,10 @@
 // ignore_for_file: depend_on_referenced_packages
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_login/theme.dart';
 import 'package:flutter_login/widgets.dart';
 import 'package:glucomed/constants.dart';
 import 'package:glucomed/transition_route_observer.dart';
-import 'package:glucomed/widgets/animated_numeric_text.dart';
 import 'package:glucomed/widgets/fade_in.dart';
 import 'package:glucomed/widgets/round_button.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -153,31 +151,6 @@ class _DashboardScreenState extends State<DashboardScreen>
         offset: .5,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text(
-                  '\$',
-                  style: theme.textTheme.displaySmall!.copyWith(
-                    fontWeight: FontWeight.w300,
-                    color: accentColor.shade400,
-                  ),
-                ),
-                const SizedBox(width: 5),
-                AnimatedNumericText(
-                  initialValue: 14,
-                  targetValue: 3467.87,
-                  curve: const Interval(0, .5, curve: Curves.easeOut),
-                  controller: _loadingController!,
-                  style: theme.textTheme.displaySmall!.copyWith(
-                    foreground: Paint()..shader = linearGradient,
-                  ),
-                ),
-              ],
-            ),
-            Text('Account Balance', style: theme.textTheme.bodySmall),
-          ],
         ),
       ),
     );
@@ -198,97 +171,6 @@ class _DashboardScreenState extends State<DashboardScreen>
         curve: const ElasticOutCurve(0.42),
       ),
       onPressed: () {},
-    );
-  }
-
-  Widget _buildDashboardGrid() {
-    const step = 0.04;
-    const aniInterval = 0.75;
-
-    return GridView.count(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 32.0,
-        vertical: 20,
-      ),
-      childAspectRatio: .9,
-      // crossAxisSpacing: 5,
-      crossAxisCount: 3,
-      children: [
-        _buildButton(
-          icon: const Icon(FontAwesomeIcons.user),
-          label: 'Profile',
-          interval: const Interval(0, aniInterval),
-        ),
-        _buildButton(
-          icon: Container(
-            // fix icon is not centered like others for some reasons
-            padding: const EdgeInsets.only(left: 16.0),
-            alignment: Alignment.centerLeft,
-            child: const Icon(
-              FontAwesomeIcons.moneyBill1,
-              size: 20,
-            ),
-          ),
-          label: 'Fund Transfer',
-          interval: const Interval(step, aniInterval + step),
-        ),
-        _buildButton(
-          icon: const Icon(FontAwesomeIcons.handHoldingDollar),
-          label: 'Payment',
-          interval: const Interval(step * 2, aniInterval + step * 2),
-        ),
-        _buildButton(
-          icon: const Icon(FontAwesomeIcons.chartLine),
-          label: 'Report',
-          interval: const Interval(0, aniInterval),
-        ),
-        _buildButton(
-          icon: const Icon(Icons.vpn_key),
-          label: 'Register',
-          interval: const Interval(step, aniInterval + step),
-        ),
-        _buildButton(
-          icon: const Icon(FontAwesomeIcons.clockRotateLeft),
-          label: 'History',
-          interval: const Interval(step * 2, aniInterval + step * 2),
-        ),
-        _buildButton(
-          icon: const Icon(FontAwesomeIcons.ellipsis),
-          label: 'Other',
-          interval: const Interval(0, aniInterval),
-        ),
-        _buildButton(
-          icon: const Icon(FontAwesomeIcons.magnifyingGlass, size: 20),
-          label: 'Search',
-          interval: const Interval(step, aniInterval + step),
-        ),
-        _buildButton(
-          icon: const Icon(FontAwesomeIcons.sliders, size: 20),
-          label: 'Settings',
-          interval: const Interval(step * 2, aniInterval + step * 2),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildDebugButtons() {
-    const textStyle = TextStyle(fontSize: 12, color: Colors.white);
-
-    return Positioned(
-      bottom: 0,
-      right: 0,
-      child: Row(
-        children: <Widget>[
-          MaterialButton(
-            materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-            color: Colors.red,
-            onPressed: () => _loadingController!.value == 0
-                ? _loadingController!.forward()
-                : _loadingController!.reverse(),
-            child: const Text('loading', style: textStyle),
-          ),
-        ],
-      ),
     );
   }
 
@@ -332,12 +214,10 @@ class _DashboardScreenState extends State<DashboardScreen>
                             ],
                           ).createShader(bounds);
                         },
-                        child: _buildDashboardGrid(),
                       ),
                     ),
                   ],
                 ),
-                if (!kReleaseMode) _buildDebugButtons(),
               ],
             ),
           ),
