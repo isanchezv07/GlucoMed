@@ -1,8 +1,8 @@
-// ignore_for_file: depend_on_referenced_packages
-
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart' show timeDilation;
 import 'package:flutter_login/flutter_login.dart';
+import 'package:sms/sms.dart'; // Importa la biblioteca sms
 import 'package:glucomed/constants.dart';
 import 'package:glucomed/custom_route.dart';
 import 'package:glucomed/dashboard_screen.dart';
@@ -34,20 +34,34 @@ class LoginScreen extends StatelessWidget {
     });
   }
 
-  Future<String?> _recoverPassword(String name) {
-    return Future.delayed(loginTime).then((_) {
-      if (!mockUsers.containsKey(name)) {
-        return 'User not exists';
+  Future<String?> _recoverPassword(String phoneNumber) {
+    return _sendRecoverySMS(phoneNumber).then((success) {
+      if (success) {
+        return null;
+      } else {
+        return 'Error al enviar el SMS de recuperación';
       }
-      return null;
     });
   }
-
+  
   Future<String?> _signupConfirm(String error, LoginData data) {
     return Future.delayed(loginTime).then((_) {
       return null;
     });
   }
+
+  Future<bool> _sendRecoverySMS(String phoneNumber) async {
+    try {
+      final sender = SmsSender();
+      final message = SmsMessage(phoneNumber, 'Tu código de recuperación es: 123456');
+      sender.sendSms(message);
+      return true;
+    } catch (e) {
+      debugPrint('Error al enviar el SMS: $e');
+      return false;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return FlutterLogin(
@@ -60,15 +74,6 @@ class LoginScreen extends StatelessWidget {
       onConfirmRecover: _signupConfirm,
       onConfirmSignup: _signupConfirm,
       loginAfterSignUp: false,
-      //loginProviders: [
-      //  LoginProvider(
-      //    icon: FontAwesomeIcons.google,
-      //    label: 'Google',
-      //    callback: () async {
-      //      return null;
-      //    },
-      //  ),
-      //],
       termsOfService: [
         TermOfService(
           id: 'newsletter',
@@ -106,106 +111,6 @@ class LoginScreen extends StatelessWidget {
           },
         ),
       ],
-      // scrollable: true,
-      // hideProvidersTitle: false,
-      // loginAfterSignUp: false,
-      // hideForgotPasswordButton: true,
-      // hideSignUpButton: true,
-      // disableCustomPageTransformer: true,
-      // messages: LoginMessages(
-      //   userHint: 'User',
-      //   passwordHint: 'Pass',
-      //   confirmPasswordHint: 'Confirm',
-      //   loginButton: 'LOG IN',
-      //   signupButton: 'REGISTER',
-      //   forgotPasswordButton: 'Forgot huh?',
-      //   recoverPasswordButton: 'HELP ME',
-      //   goBackButton: 'GO BACK',
-      //   confirmPasswordError: 'Not match!',
-      //   recoverPasswordIntro: 'Don\'t feel bad. Happens all the time.',
-      //   recoverPasswordDescription: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry',
-      //   recoverPasswordSuccess: 'Password rescued successfully',
-      //   flushbarTitleError: 'Oh no!',
-      //   flushbarTitleSuccess: 'Succes!',
-      //   providersTitle: 'login with'
-      // ),
-      // theme: LoginTheme(
-      //   primaryColor: Colors.teal,
-      //   accentColor: Colors.yellow,
-      //   errorColor: Colors.deepOrange,
-      //   pageColorLight: Colors.indigo.shade300,
-      //   pageColorDark: Colors.indigo.shade500,
-      //   logoWidth: 0.80,
-      //   titleStyle: TextStyle(
-      //     color: Colors.greenAccent,
-      //     fontFamily: 'Quicksand',
-      //     letterSpacing: 4,
-      //   ),
-      //   // beforeHeroFontSize: 50,
-      //   // afterHeroFontSize: 20,
-      //   bodyStyle: TextStyle(
-      //     fontStyle: FontStyle.italic,
-      //     decoration: TextDecoration.underline,
-      //   ),
-      //   textFieldStyle: TextStyle(
-      //     color: Colors.orange,
-      //     shadows: [Shadow(color: Colors.yellow, blurRadius: 2)],
-      //   ),
-      //   buttonStyle: TextStyle(
-      //     fontWeight: FontWeight.w800,
-      //     color: Colors.yellow,
-      //   ),
-      //   cardTheme: CardTheme(
-      //     color: Colors.yellow.shade100,
-      //     elevation: 5,
-      //     margin: EdgeInsets.only(top: 15),
-      //     shape: ContinuousRectangleBorder(
-      //         borderRadius: BorderRadius.circular(100.0)),
-      //   ),
-      //   inputTheme: InputDecorationTheme(
-      //     filled: true,
-      //     fillColor: Colors.purple.withOpacity(.1),
-      //     contentPadding: EdgeInsets.zero,
-      //     errorStyle: TextStyle(
-      //       backgroundColor: Colors.orange,
-      //       color: Colors.white,
-      //     ),
-      //     labelStyle: TextStyle(fontSize: 12),
-      //     enabledBorder: UnderlineInputBorder(
-      //       borderSide: BorderSide(color: Colors.blue.shade700, width: 4),
-      //       borderRadius: inputBorder,
-      //     ),
-      //     focusedBorder: UnderlineInputBorder(
-      //       borderSide: BorderSide(color: Colors.blue.shade400, width: 5),
-      //       borderRadius: inputBorder,
-      //     ),
-      //     errorBorder: UnderlineInputBorder(
-      //       borderSide: BorderSide(color: Colors.red.shade700, width: 7),
-      //       borderRadius: inputBorder,
-      //     ),
-      //     focusedErrorBorder: UnderlineInputBorder(
-      //       borderSide: BorderSide(color: Colors.red.shade400, width: 8),
-      //       borderRadius: inputBorder,
-      //     ),
-      //     disabledBorder: UnderlineInputBorder(
-      //       borderSide: BorderSide(color: Colors.grey, width: 5),
-      //       borderRadius: inputBorder,
-      //     ),
-      //   ),
-      //   buttonTheme: LoginButtonTheme(
-      //     splashColor: Colors.purple,
-      //     backgroundColor: Colors.pinkAccent,
-      //     highlightColor: Colors.lightGreen,
-      //     elevation: 9.0,
-      //     highlightElevation: 6.0,
-      //     shape: BeveledRectangleBorder(
-      //       borderRadius: BorderRadius.circular(10),
-      //     ),
-      //     // shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
-      //     // shape: CircleBorder(side: BorderSide(color: Colors.green)),
-      //     // shape: ContinuousRectangleBorder(borderRadius: BorderRadius.circular(55.0)),
-      //   ),
-      // ),
       userValidator: (value) {
         if (!value!.contains('@') || !value.endsWith('.com')) {
           return "Email must contain '@' and end with '.com'";
@@ -249,11 +154,11 @@ class LoginScreen extends StatelessWidget {
           ),
         );
       },
-      onRecoverPassword: (name) {
-        debugPrint('Recover password info');
-        debugPrint('Name: $name');
-        return _recoverPassword(name);
-        // Show new password dialog
+      onRecoverPassword: (phoneNumber) {
+        debugPrint('Información de recuperación de contraseña');
+        debugPrint('Número de teléfono: $phoneNumber');
+        return _recoverPassword(phoneNumber);
+        // Muestra el diálogo de nueva contraseña
       },
       headerWidget: const IntroWidget(),
     );
