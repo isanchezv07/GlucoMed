@@ -1,3 +1,5 @@
+// ignore_for_file: depend_on_referenced_packages, prefer_const_constructors, unused_element
+
 import 'package:flutter/material.dart';
 import 'package:flutter_login/theme.dart';
 import 'package:flutter_login/widgets.dart';
@@ -6,18 +8,17 @@ import 'package:glucomed/transition_route_observer.dart';
 import 'package:glucomed/widgets/fade_in.dart';
 import 'package:glucomed/widgets/round_button.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'item_2_menu.dart'; // Importa la pantalla de destino
 
-class DashboardScreen extends StatefulWidget {
+class item_2_menu extends StatefulWidget {
   static const routeName = '/dashboard';
 
-  const DashboardScreen({Key? key});
+  const item_2_menu({super.key});
 
   @override
-  State<DashboardScreen> createState() => _DashboardScreenState();
+  State<item_2_menu> createState() => _item_2_menu();
 }
 
-class _DashboardScreenState extends State<DashboardScreen>
+class _item_2_menu extends State<item_2_menu>
     with SingleTickerProviderStateMixin, TransitionRouteAware {
   Future<bool> _goToLogin(BuildContext context) {
     return Navigator.of(context)
@@ -29,7 +30,7 @@ class _DashboardScreenState extends State<DashboardScreen>
   final routeObserver = TransitionRouteObserver<PageRoute?>();
   static const headerAniInterval = Interval(.1, .3, curve: Curves.easeOut);
   late Animation<double> _headerScaleAnimation;
-  late AnimationController _loadingController;
+  AnimationController? _loadingController;
 
   @override
   void initState() {
@@ -42,7 +43,7 @@ class _DashboardScreenState extends State<DashboardScreen>
 
     _headerScaleAnimation = Tween<double>(begin: .6, end: 1).animate(
       CurvedAnimation(
-        parent: _loadingController,
+        parent: _loadingController!,
         curve: headerAniInterval,
       ),
     );
@@ -60,12 +61,12 @@ class _DashboardScreenState extends State<DashboardScreen>
   @override
   void dispose() {
     routeObserver.unsubscribe(this);
-    _loadingController.dispose();
+    _loadingController!.dispose();
     super.dispose();
   }
 
   @override
-  void didPushAfterTransition() => _loadingController.forward();
+  void didPushAfterTransition() => _loadingController!.forward();
 
   AppBar _buildAppBar(ThemeData theme) {
     final menuBtn = IconButton(
@@ -84,6 +85,14 @@ class _DashboardScreenState extends State<DashboardScreen>
         children: <Widget>[
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 8.0),
+            child: Hero(
+              tag: Constants.logoTag,
+              child: Image.asset(
+                'assets/images/ecorp.png',
+                filterQuality: FilterQuality.high,
+                height: 30,
+              ),
+            ),
           ),
           HeroText(
             Constants.appName,
@@ -115,6 +124,9 @@ class _DashboardScreenState extends State<DashboardScreen>
       title: title,
       backgroundColor: theme.primaryColor.withOpacity(.1),
       elevation: 0,
+      // toolbarTextStyle: TextStle(),
+      // textTheme: theme.accentTextTheme,
+      // iconTheme: theme.accentIconTheme,
     );
   }
 
@@ -148,7 +160,6 @@ class _DashboardScreenState extends State<DashboardScreen>
     Widget? icon,
     String? label,
     required Interval interval,
-    required int itemIndex, // Necesitamos el índice del botón
   }) {
     return RoundButton(
       icon: icon,
@@ -159,20 +170,7 @@ class _DashboardScreenState extends State<DashboardScreen>
         interval.end,
         curve: const ElasticOutCurve(0.42),
       ),
-      onPressed: () {
-        // Verifica si el índice del botón es 2
-        if (itemIndex == 2) {
-          // Navega a la pantalla "item_2_menu.dart"
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => item_2_menu(), // Pantalla de destino
-            ),
-          );
-        } else {
-          print('Item $itemIndex');
-        }
-      },
+      onPressed: () {},
     );
   }
 
@@ -180,25 +178,48 @@ class _DashboardScreenState extends State<DashboardScreen>
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return WillPopScope(
-      onWillPop: () async {
-        await _goToLogin(context);
-        return false;
-      },
+    return PopScope(
+      onPopInvoked: (hasPopped) => hasPopped ? _goToLogin(context) : null,
       child: SafeArea(
         child: Scaffold(
           appBar: _buildAppBar(theme),
-          body: GridView.count(
-            crossAxisCount: 2,
-            children: List.generate(8, (index) {
-              int itemIndex = index + 1;
-              return _buildButton(
-                icon: null,
-                label: 'Item $itemIndex',
-                interval: Interval(0.0, 0.5),
-                itemIndex: itemIndex,
-              );
-            }),
+          body: Container(
+            width: double.infinity,
+            height: double.infinity,
+            color: theme.primaryColor.withOpacity(.1),
+            child: Stack(
+              children: <Widget>[
+                Column(
+                  children: <Widget>[
+                    const SizedBox(height: 40),
+                    Expanded(
+                      flex: 2,
+                      child: _buildHeader(theme),
+                    ),
+                    Expanded(
+                      flex: 8,
+                      child: ShaderMask(
+                        // blendMode: BlendMode.srcOver,
+                        shaderCallback: (Rect bounds) {
+                          return LinearGradient(
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                            colors: <Color>[
+                              Colors.deepPurpleAccent.shade100,
+                              Colors.deepPurple.shade100,
+                              Colors.deepPurple.shade100,
+                              Colors.deepPurple.shade100,
+                              // Colors.red,
+                              // Colors.yellow,
+                            ],
+                          ).createShader(bounds);
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),

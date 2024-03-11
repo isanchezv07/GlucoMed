@@ -50,8 +50,6 @@ class LoginScreen extends StatelessWidget {
     return FlutterLogin(
       title: Constants.appName,
       keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-      logo: const AssetImage('assets/images/ecorpj.png'),
-      logoTag: Constants.logoTag,
       titleTag: Constants.titleTag,
       navigateBackAfterRecovery: true,
       onConfirmRecover: _signupConfirm,
@@ -174,7 +172,6 @@ class IntroWidget extends StatelessWidget {
             Expanded(child: Divider()),
             Padding(
               padding: EdgeInsets.all(8.0),
-              child: Text("Authenticate"),
             ),
             Expanded(child: Divider()),
           ],
