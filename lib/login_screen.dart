@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart' show timeDilation;
 import 'package:flutter_login/flutter_login.dart';
-import 'package:sms/sms.dart'; // Importa la biblioteca sms
 import 'package:glucomed/constants.dart';
 import 'package:glucomed/custom_route.dart';
 import 'package:glucomed/dashboard_screen.dart';
@@ -35,12 +34,8 @@ class LoginScreen extends StatelessWidget {
   }
 
   Future<String?> _recoverPassword(String phoneNumber) {
-    return _sendRecoverySMS(phoneNumber).then((success) {
-      if (success) {
-        return null;
-      } else {
-        return 'Error al enviar el SMS de recuperación';
-      }
+    return Future.delayed(loginTime).then((_) {
+      return null;
     });
   }
   
@@ -50,24 +45,12 @@ class LoginScreen extends StatelessWidget {
     });
   }
 
-  Future<bool> _sendRecoverySMS(String phoneNumber) async {
-    try {
-      final sender = SmsSender();
-      final message = SmsMessage(phoneNumber, 'Tu código de recuperación es: 123456');
-      sender.sendSms(message);
-      return true;
-    } catch (e) {
-      debugPrint('Error al enviar el SMS: $e');
-      return false;
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return FlutterLogin(
       title: Constants.appName,
       keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-      logo: const AssetImage('assets/images/ecorp.png'),
+      logo: const AssetImage('assets/images/ecorpj.png'),
       logoTag: Constants.logoTag,
       titleTag: Constants.titleTag,
       navigateBackAfterRecovery: true,
@@ -176,10 +159,10 @@ class IntroWidget extends StatelessWidget {
           TextSpan(
             children: [
               TextSpan(
-                text: "You are trying to login/sign up on server hosted on ",
+                text: "You are trying to login/sign up on ",
               ),
               TextSpan(
-                text: "example.com",
+                text: "glucomed",
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
             ],
