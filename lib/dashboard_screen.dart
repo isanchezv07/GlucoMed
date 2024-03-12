@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:flutter_login/theme.dart';
 import 'package:flutter_login/widgets.dart';
@@ -30,6 +32,17 @@ class _DashboardScreenState extends State<DashboardScreen>
   static const headerAniInterval = Interval(.1, .3, curve: Curves.easeOut);
   late Animation<double> _headerScaleAnimation;
   late AnimationController _loadingController;
+
+  final List<String> buttonTitles = [
+    'Configuracion',
+    'User',
+    'Title 3',
+    'Title 4',
+    'Title 5',
+    'Title 6',
+    'Title 7',
+    'Title 8',
+  ];
 
   @override
   void initState() {
@@ -146,9 +159,10 @@ class _DashboardScreenState extends State<DashboardScreen>
 
   Widget _buildButton({
     Widget? icon,
-    String? label,
+    required String label,
     required Interval interval,
     required int itemIndex, // Necesitamos el índice del botón
+    double size = 100.0, // Tamaño predeterminado del botón
   }) {
     return RoundButton(
       icon: icon,
@@ -159,6 +173,7 @@ class _DashboardScreenState extends State<DashboardScreen>
         interval.end,
         curve: const ElasticOutCurve(0.42),
       ),
+      size: size, // Usa el tamaño definido
       onPressed: () {
         // Verifica si el índice del botón es 2
         if (itemIndex == 2) {
@@ -194,9 +209,10 @@ class _DashboardScreenState extends State<DashboardScreen>
               int itemIndex = index + 1;
               return _buildButton(
                 icon: null,
-                label: 'Item $itemIndex',
+                label: buttonTitles[index],
                 interval: Interval(0.0, 0.5),
                 itemIndex: itemIndex,
+                size: 150.0, // Ajusta el tamaño del botón según sea necesario
               );
             }),
           ),
