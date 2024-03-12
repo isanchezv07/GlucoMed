@@ -36,7 +36,7 @@ class _DashboardScreenState extends State<DashboardScreen>
   final List<String> buttonTitles = [
     'Configuracion',
     'User',
-    'Title 3',
+    'Planes',
     'Title 4',
     'Title 5',
     'Title 6',
