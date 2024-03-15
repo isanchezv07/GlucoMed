@@ -18,7 +18,7 @@ import 'package:glucomed/src/widgets/cards/auth_card_builder.dart';
 import 'package:glucomed/src/widgets/fade_in.dart';
 import 'package:glucomed/src/widgets/gradient_box.dart';
 import 'package:glucomed/src/widgets/hero_text.dart';
-import 'package:flutter_login/theme.dart';
+import 'package:glucomed/theme.dart';
 import 'package:provider/provider.dart';
 import 'package:sign_in_button/sign_in_button.dart';
 

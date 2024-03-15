@@ -4,7 +4,7 @@ import 'package:glucomed/dashboard_screen.dart';
 import 'package:glucomed/login_screen.dart';
 import 'package:glucomed/transition_route_observer.dart';
 
-void main() {
+void main() async{
   SystemChrome.setSystemUIOverlayStyle(
     SystemUiOverlayStyle(
       systemNavigationBarColor:
@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Login Demo',
+      title: 'Login',
       theme: ThemeData(
         textSelectionTheme:
             const TextSelectionThemeData(cursorColor: Colors.orange),

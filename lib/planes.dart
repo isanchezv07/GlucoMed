@@ -1,52 +1,35 @@
-// ignore_for_file: prefer_const_constructors
-
 import 'package:flutter/material.dart';
 import 'package:flutter_login/theme.dart';
 import 'package:flutter_login/widgets.dart';
-import 'package:glucomed/clinicas.dart';
-import 'package:glucomed/configuracion.dart';
 import 'package:glucomed/constants.dart';
-import 'package:glucomed/planes.dart';
+import 'package:glucomed/dashboard_screen.dart'; // Importa la pantalla del dashboard
 import 'package:glucomed/transition_route_observer.dart';
 import 'package:glucomed/widgets/fade_in.dart';
-import 'package:glucomed/widgets/round_button.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'item_2_menu.dart'; // Importa la pantalla de destino
-import 'configuracion.dart';
 
-class DashboardScreen extends StatefulWidget {
+class Planes extends StatefulWidget {
   static const routeName = '/dashboard';
 
-  const DashboardScreen({Key? key});
+  const Planes({super.key});
 
   @override
-  State<DashboardScreen> createState() => _DashboardScreenState();
+  State<Planes> createState() => _Planes();
 }
 
-class _DashboardScreenState extends State<DashboardScreen>
+class _Planes extends State<Planes>
     with SingleTickerProviderStateMixin, TransitionRouteAware {
   Future<bool> _goToLogin(BuildContext context) {
     return Navigator.of(context)
         .pushReplacementNamed('/auth')
-        // we dont want to pop the screen, just replace it completely
         .then((_) => false);
   }
 
   final routeObserver = TransitionRouteObserver<PageRoute?>();
   static const headerAniInterval = Interval(.1, .3, curve: Curves.easeOut);
   late Animation<double> _headerScaleAnimation;
-  late AnimationController _loadingController;
+  AnimationController? _loadingController;
 
-  final List<String> buttonTitles = [
-    'Configuracion',
-    'User',
-    'Planes',
-    'Clinicas',
-    'Title 5',
-    'Title 6',
-    'Title 7',
-    'Title 8',
-  ];
+  bool _isMenuOpen = false;
 
   @override
   void initState() {
@@ -59,7 +42,7 @@ class _DashboardScreenState extends State<DashboardScreen>
 
     _headerScaleAnimation = Tween<double>(begin: .6, end: 1).animate(
       CurvedAnimation(
-        parent: _loadingController,
+        parent: _loadingController!,
         curve: headerAniInterval,
       ),
     );
@@ -77,18 +60,22 @@ class _DashboardScreenState extends State<DashboardScreen>
   @override
   void dispose() {
     routeObserver.unsubscribe(this);
-    _loadingController.dispose();
+    _loadingController!.dispose();
     super.dispose();
   }
 
   @override
-  void didPushAfterTransition() => _loadingController.forward();
+  void didPushAfterTransition() => _loadingController!.forward();
 
   AppBar _buildAppBar(ThemeData theme) {
     final menuBtn = IconButton(
       color: theme.colorScheme.secondary,
       icon: const Icon(FontAwesomeIcons.bars),
-      onPressed: () {},
+      onPressed: () {
+        setState(() {
+          _isMenuOpen = !_isMenuOpen;
+        });
+      },
     );
     final signOutBtn = IconButton(
       icon: const Icon(FontAwesomeIcons.rightFromBracket),
@@ -101,6 +88,14 @@ class _DashboardScreenState extends State<DashboardScreen>
         children: <Widget>[
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 8.0),
+            child: Hero(
+              tag: Constants.logoTag,
+              child: Image.asset(
+                'assets/images/ecorp.png',
+                filterQuality: FilterQuality.high,
+                height: 30,
+              ),
+            ),
           ),
           HeroText(
             Constants.appName,
@@ -161,98 +156,95 @@ class _DashboardScreenState extends State<DashboardScreen>
     );
   }
 
-  Widget _buildButton({
-    Widget? icon,
-    required String label,
-    required Interval interval,
-    required int itemIndex, // Necesitamos el índice del botón
-    double size = 100.0, // Tamaño predeterminado del botón
-  }) {
-    return RoundButton(
-      icon: icon,
-      label: label,
-      loadingController: _loadingController,
-      interval: Interval(
-        interval.begin,
-        interval.end,
-        curve: const ElasticOutCurve(0.42),
-      ),
-      size: size, // Usa el tamaño definido
-      onPressed: () {
-        // Verifica si el índice del botón es 2
-        if (itemIndex == 1) {
-          // Navega a la pantalla "item_2_menu.dart"
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => Configuracion(), // Pantalla de destino
-            ),
-          );
-        } else {
-          print('Item $itemIndex');
-        }
-        if (itemIndex == 2) {
-          // Navega a la pantalla "item_2_menu.dart"
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => item_2_menu(), // Pantalla de destino
-            ),
-          );
-        } else {
-          print('Item $itemIndex');
-        }
-        if (itemIndex == 3) {
-          // Navega a la pantalla "item_2_menu.dart"
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => Planes(), // Pantalla de destino
-            ),
-          );
-        } else {
-          print('Item $itemIndex');
-        }
-        if (itemIndex == 4) {
-          // Navega a la pantalla "item_2_menu.dart"
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => Clinicas(), // Pantalla de destino
-            ),
-          );
-        } else {
-          print('Item $itemIndex');
-        }
-      },
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return WillPopScope(
-      onWillPop: () async {
-        await _goToLogin(context);
-        return false;
-      },
+    return PopScope(
+      onPopInvoked: (hasPopped) => hasPopped ? _goToLogin(context) : null,
       child: SafeArea(
         child: Scaffold(
           appBar: _buildAppBar(theme),
-          body: GridView.count(
-            crossAxisCount: 2,
-            children: List.generate(8, (index) {
-              int itemIndex = index + 1;
-              return _buildButton(
-                icon: null,
-                label: buttonTitles[index],
-                interval: Interval(0.0, 0.5),
-                itemIndex: itemIndex,
-                size: 150.0, // Ajusta el tamaño del botón según sea necesario
-              );
-            }),
+          body: Container(
+            width: double.infinity,
+            height: double.infinity,
+            color: theme.primaryColor.withOpacity(.1),
+            child: Stack(
+              children: <Widget>[
+                Column(
+                  children: <Widget>[
+                    const SizedBox(height: 40),
+                    Expanded(
+                      flex: 2,
+                      child: _buildHeader(theme),
+                    ),
+                    Expanded(
+                      flex: 8,
+                      child: ShaderMask(
+                        shaderCallback: (Rect bounds) {
+                          return LinearGradient(
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                            colors: <Color>[
+                              Colors.deepPurpleAccent.shade100,
+                              Colors.deepPurple.shade100,
+                              Colors.deepPurple.shade100,
+                              Colors.deepPurple.shade100,
+                            ],
+                          ).createShader(bounds);
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+                _buildMenu(theme),
+              ],
+            ),
           ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildMenu(ThemeData theme) {
+    return AnimatedPositioned(
+      duration: const Duration(milliseconds: 250),
+      left: _isMenuOpen ? 0 : -200,
+      top: 0,
+      bottom: 0,
+      width: 200,
+      child: Container(
+        color: Colors.white,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ListTile(
+              title: Text('Option 1'),
+              onTap: () {
+                // Handle Option 1
+              },
+            ),
+            ListTile(
+              title: Text('Opcion 3'),
+              onTap: () {
+
+              },
+            ),
+            ListTile(
+              title: Text('Option 3'),
+              onTap: () {
+                // Handle Option 1
+              },
+            ),
+            ListTile(
+              title: Text('Regresar'),
+              onTap: () {
+                // Navegar al dashboard
+                Navigator.pushNamed(context, DashboardScreen.routeName);
+              },
+            ),
+          ],
         ),
       ),
     );

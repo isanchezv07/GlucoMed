@@ -7,18 +7,37 @@ import 'package:glucomed/transition_route_observer.dart';
 import 'package:glucomed/widgets/fade_in.dart';
 import 'package:glucomed/widgets/round_button.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:geolocator/geolocator.dart';
 
-class item_2_menu extends StatefulWidget {
+class Clinicas extends StatefulWidget {
   static const routeName = '/dashboard';
 
-  const item_2_menu({super.key});
+  const Clinicas({Key? key}) : super(key: key);
 
   @override
-  State<item_2_menu> createState() => _item_2_menu();
+  State<Clinicas> createState() => _Clinicas();
 }
 
-class _item_2_menu extends State<item_2_menu>
-    with SingleTickerProviderStateMixin, TransitionRouteAware {
+class _Clinicas extends State<Clinicas>
+  with SingleTickerProviderStateMixin, TransitionRouteAware {
+
+  Future<Position> determinePosition() async {
+    LocationPermission permission;
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == await LocationPermission.denied) {
+        return Future.error('error');
+      }
+    }
+    return await Geolocator.getCurrentPosition();
+  }
+
+  void getCurrentPosition() async {
+    Position position = await determinePosition();
+    print(position.latitude);
+    print(position.longitude);
+  }
   Future<bool> _goToLogin(BuildContext context) {
     return Navigator.of(context)
         .pushReplacementNamed('/auth')
@@ -152,6 +171,14 @@ class _item_2_menu extends State<item_2_menu>
         offset: .5,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            ElevatedButton(
+              onPressed: () {
+                getCurrentPosition();
+              },
+              child: const Text('Mi Botón'),
+            ),
+          ],
         ),
       ),
     );
@@ -161,8 +188,11 @@ class _item_2_menu extends State<item_2_menu>
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return PopScope(
-      onPopInvoked: (hasPopped) => hasPopped ? _goToLogin(context) : null,
+    return WillPopScope(
+      onWillPop: () async {
+        final hasPopped = await _goToLogin(context);
+        return hasPopped;
+      },
       child: SafeArea(
         child: Scaffold(
           appBar: _buildAppBar(theme),
@@ -229,7 +259,7 @@ class _item_2_menu extends State<item_2_menu>
             ListTile(
               title: Text('Opcion 3'),
               onTap: () {
-
+                // Handle Option 3
               },
             ),
             ListTile(
