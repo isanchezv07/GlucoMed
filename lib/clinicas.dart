@@ -196,37 +196,29 @@ class _Clinicas extends State<Clinicas>
       child: SafeArea(
         child: Scaffold(
           appBar: _buildAppBar(theme),
-          body: Container(
-            width: double.infinity,
-            height: double.infinity,
-            color: theme.primaryColor.withOpacity(.1),
-            child: Stack(
-              children: <Widget>[
-                Column(
-                  children: <Widget>[
-                    const SizedBox(height: 40),
-                    Expanded(
-                      flex: 2,
-                      child: _buildHeader(theme),
+          body: SingleChildScrollView( // Agregar SingleChildScrollView
+            child: Container(
+              width: double.infinity,
+              color: theme.primaryColor.withOpacity(.1),
+              child: Column(
+                children: <Widget>[
+                  const SizedBox(height: 40),
+                  _buildHeader(theme),
+                  GridView.builder(
+                    shrinkWrap: true, // Importante: Para que la rejilla se ajuste al contenido
+                    physics: NeverScrollableScrollPhysics(), // Para deshabilitar el desplazamiento de la cuadrícula
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 8,
+                      mainAxisSpacing: 8,
                     ),
-                    Expanded(
-                      flex: 8,
-                      child: GridView.builder(
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          crossAxisSpacing: 8,
-                          mainAxisSpacing: 8,
-                        ),
-                        itemCount: 6, // Cambia este valor según la cantidad de cuadrados que desees
-                        itemBuilder: (context, index) {
-                          return _buildClinicCard(index);
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-                _buildMenu(theme),
-              ],
+                    itemCount: 6, // Cambiar este valor según la cantidad de cuadrados que desees
+                    itemBuilder: (context, index) {
+                      return _buildClinicCard(index);
+                    },
+                  ),
+                ],
+              ),
             ),
           ),
         ),
