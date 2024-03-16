@@ -19,8 +19,7 @@ class Clinicas extends StatefulWidget {
 }
 
 class _Clinicas extends State<Clinicas>
-  with SingleTickerProviderStateMixin, TransitionRouteAware {
-
+    with SingleTickerProviderStateMixin, TransitionRouteAware {
   Future<Position> determinePosition() async {
     LocationPermission permission;
     permission = await Geolocator.checkPermission();
@@ -38,6 +37,7 @@ class _Clinicas extends State<Clinicas>
     print(position.latitude);
     print(position.longitude);
   }
+
   Future<bool> _goToLogin(BuildContext context) {
     return Navigator.of(context)
         .pushReplacementNamed('/auth')
@@ -211,18 +211,15 @@ class _Clinicas extends State<Clinicas>
                     ),
                     Expanded(
                       flex: 8,
-                      child: ShaderMask(
-                        shaderCallback: (Rect bounds) {
-                          return LinearGradient(
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
-                            colors: <Color>[
-                              Colors.deepPurpleAccent.shade100,
-                              Colors.deepPurple.shade100,
-                              Colors.deepPurple.shade100,
-                              Colors.deepPurple.shade100,
-                            ],
-                          ).createShader(bounds);
+                      child: GridView.builder(
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          crossAxisSpacing: 8,
+                          mainAxisSpacing: 8,
+                        ),
+                        itemCount: 6, // Cambia este valor según la cantidad de cuadrados que desees
+                        itemBuilder: (context, index) {
+                          return _buildClinicCard(index);
                         },
                       ),
                     ),
@@ -233,6 +230,52 @@ class _Clinicas extends State<Clinicas>
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildClinicCard(int index) {
+    // Aquí puedes personalizar los datos de cada clínica
+    // Por ahora, se generan datos ficticios
+    final clinicImage = Image.asset(
+      'assets/images/ecorp.png',
+      fit: BoxFit.cover,
+    );
+
+    final clinicName = Text(
+      'Clinica $index',
+      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+    );
+
+    final clinicFeatures = Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text('Dirección: Dirección $index'),
+        Text('Teléfono: Teléfono $index'),
+        Text('Horario: Horario $index'),
+      ],
+    );
+
+    return Card(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(
+            height: 100,
+            child: clinicImage,
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                clinicName,
+                SizedBox(height: 8),
+                clinicFeatures,
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
