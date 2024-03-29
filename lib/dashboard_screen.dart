@@ -6,6 +6,7 @@ import 'package:flutter_login/widgets.dart';
 import 'package:glucomed/clinicas.dart';
 import 'package:glucomed/configuracion.dart';
 import 'package:glucomed/constants.dart';
+import 'package:glucomed/dev.dart';
 import 'package:glucomed/planes.dart';
 import 'package:glucomed/transition_route_observer.dart';
 import 'package:glucomed/widgets/fade_in.dart';
@@ -13,6 +14,7 @@ import 'package:glucomed/widgets/round_button.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'item_2_menu.dart'; // Importa la pantalla de destino
 import 'configuracion.dart';
+import 'Dev.dart';
 
 class DashboardScreen extends StatefulWidget {
   static const routeName = '/dashboard';
@@ -214,6 +216,28 @@ class _DashboardScreenState extends State<DashboardScreen>
           print('Item $itemIndex');
         }
         if (itemIndex == 4) {
+          // Navega a la pantalla "item_2_menu.dart"
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => Clinicas(), // Pantalla de destino
+            ),
+          );
+        } else {
+          print('Item $itemIndex');
+        }
+        if (itemIndex == 5) {
+          // Navega a la pantalla "item_2_menu.dart"
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => Dev(), // Pantalla de destino
+            ),
+          );
+        } else {
+          print('Item $itemIndex');
+        }
+        if (itemIndex == 6) {
           // Navega a la pantalla "item_2_menu.dart"
           Navigator.push(
             context,
