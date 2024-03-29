@@ -9,6 +9,23 @@ import 'package:glucomed/widgets/round_button.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 
+// Define la clase para representar una clínica
+class Clinic {
+  final String name;
+  final String address;
+  final String phone;
+  final String schedule;
+  final String imageUrl;
+
+  Clinic({
+    required this.name,
+    required this.address,
+    required this.phone,
+    required this.schedule,
+    required this.imageUrl,
+  });
+}
+
 class Clinicas extends StatefulWidget {
   static const routeName = '/dashboard';
 
@@ -50,6 +67,53 @@ class _Clinicas extends State<Clinicas>
   AnimationController? _loadingController;
 
   bool _isMenuOpen = false;
+
+  // Define una lista de clínicas con información específica
+  final List<Clinic> clinics = [
+    Clinic(
+      name: 'Medica Sur',
+      address: 'Tlalpan',
+      phone: '55 5424 6805',
+      schedule: '24/7',
+      imageUrl: 'assets/images/medica-sur.png',
+    ),
+    Clinic(
+      name: 'Centro Médico ABC Campus Observatorio',
+      address: 'Álvaro Obregón',
+      phone: '55 5230 8000',
+      schedule: '24/7',
+      imageUrl: 'assets/images/abc.png',
+    ),
+     Clinic(
+      name: 'Centro Médico ABC Campus Santa Fe',
+      address: 'Cuajimalpa de Morelos',
+      phone: '55 1103 1600',
+      schedule: 'Horario 3',
+      imageUrl: 'assets/images/abc.png',
+    ),
+    Clinic(
+      name: 'Clinica 4',
+      address: 'Dirección 4',
+      phone: 'Teléfono 4',
+      schedule: 'Horario 4',
+      imageUrl: 'assets/images/ecorp.png',
+    ),
+     Clinic(
+      name: 'Clinica 5',
+      address: 'Dirección 5',
+      phone: 'Teléfono 5',
+      schedule: 'Horario 5',
+      imageUrl: 'assets/images/ecorp.png',
+    ),
+    Clinic(
+      name: 'Clinica 6',
+      address: 'Dirección 6',
+      phone: 'Teléfono 6',
+      schedule: 'Horario 6',
+      imageUrl: 'assets/images/ecorp.png',
+    ),
+    // Agrega más clínicas según sea necesario
+  ];
 
   @override
   void initState() {
@@ -196,7 +260,7 @@ class _Clinicas extends State<Clinicas>
       child: SafeArea(
         child: Scaffold(
           appBar: _buildAppBar(theme),
-          body: SingleChildScrollView( // Agregar SingleChildScrollView
+          body: SingleChildScrollView(
             child: Container(
               width: double.infinity,
               color: theme.primaryColor.withOpacity(.1),
@@ -205,14 +269,14 @@ class _Clinicas extends State<Clinicas>
                   const SizedBox(height: 40),
                   _buildHeader(theme),
                   GridView.builder(
-                    shrinkWrap: true, // Importante: Para que la rejilla se ajuste al contenido
-                    physics: NeverScrollableScrollPhysics(), // Para deshabilitar el desplazamiento de la cuadrícula
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
                       crossAxisSpacing: 8,
                       mainAxisSpacing: 8,
                     ),
-                    itemCount: 6, // Cambiar este valor según la cantidad de cuadrados que desees
+                    itemCount: clinics.length, // Usa la cantidad de clínicas
                     itemBuilder: (context, index) {
                       return _buildClinicCard(index);
                     },
@@ -221,30 +285,31 @@ class _Clinicas extends State<Clinicas>
               ),
             ),
           ),
+          drawer: _buildMenu(theme), // Agrega el drawer aquí
         ),
       ),
     );
   }
 
   Widget _buildClinicCard(int index) {
-    // Aquí puedes personalizar los datos de cada clínica
-    // Por ahora, se generan datos ficticios
+    final Clinic clinic = clinics[index]; // Obtiene la clínica actual
+
     final clinicImage = Image.asset(
-      'assets/images/ecorp.png',
+      clinic.imageUrl, // Usa la URL de la imagen de la clínica actual
       fit: BoxFit.cover,
     );
 
     final clinicName = Text(
-      'Clinica $index',
+      clinic.name,
       style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
     );
 
     final clinicFeatures = Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('Dirección: Dirección $index'),
-        Text('Teléfono: Teléfono $index'),
-        Text('Horario: Horario $index'),
+        Text('Dirección: ${clinic.address}'),
+        Text('Teléfono: ${clinic.phone}'),
+        Text('Horario: ${clinic.schedule}'),
       ],
     );
 
@@ -253,7 +318,7 @@ class _Clinicas extends State<Clinicas>
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SizedBox(
-            height: 100,
+            height: 70,
             child: clinicImage,
           ),
           Padding(
@@ -273,13 +338,11 @@ class _Clinicas extends State<Clinicas>
   }
 
   Widget _buildMenu(ThemeData theme) {
-    return AnimatedPositioned(
+    return AnimatedContainer(
       duration: const Duration(milliseconds: 250),
-      left: _isMenuOpen ? 0 : -200,
-      top: 0,
-      bottom: 0,
-      width: 200,
+      transform: Matrix4.translationValues(_isMenuOpen ? 0 : -200, 0, 0),
       child: Container(
+        width: 200,
         color: Colors.white,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -294,7 +357,7 @@ class _Clinicas extends State<Clinicas>
             ListTile(
               title: Text('Opcion 3'),
               onTap: () {
-                // Handle Option 3
+               // Handle Option 3
               },
             ),
             ListTile(
