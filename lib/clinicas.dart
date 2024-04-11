@@ -162,17 +162,6 @@ class _Clinicas extends State<Clinicas>
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8.0),
-            child: Hero(
-              tag: Constants.logoTag,
-              child: Image.asset(
-                'assets/images/ecorp.png',
-                filterQuality: FilterQuality.high,
-                height: 30,
-              ),
-            ),
-          ),
           HeroText(
             Constants.appName,
             tag: Constants.titleTag,
