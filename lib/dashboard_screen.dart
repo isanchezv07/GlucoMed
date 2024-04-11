@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors
-
 import 'package:flutter/material.dart';
 import 'package:flutter_login/theme.dart';
 import 'package:flutter_login/widgets.dart';
@@ -44,10 +42,6 @@ class _DashboardScreenState extends State<DashboardScreen>
     'User',
     'Planes',
     'Clinicas',
-    'Title 5',
-    'Title 6',
-    'Title 7',
-    'Title 8',
   ];
 
   @override
@@ -181,7 +175,7 @@ class _DashboardScreenState extends State<DashboardScreen>
       ),
       size: size, // Usa el tamaño definido
       onPressed: () {
-        // Verifica si el índice del botón es 2
+        // Verifica si el índice del botón es 1
         if (itemIndex == 1) {
           // Navega a la pantalla "item_2_menu.dart"
           Navigator.push(
@@ -190,55 +184,24 @@ class _DashboardScreenState extends State<DashboardScreen>
               builder: (context) => Configuracion(), // Pantalla de destino
             ),
           );
-        } else {
-          print('Item $itemIndex');
-        }
-        if (itemIndex == 2) {
-          // Navega a la pantalla "item_2_menu.dart"
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => item_2_menu(), // Pantalla de destino
-            ),
-          );
-        } else {
-          print('Item $itemIndex');
-        }
-        if (itemIndex == 3) {
-          // Navega a la pantalla "item_2_menu.dart"
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => Planes(), // Pantalla de destino
-            ),
-          );
-        } else {
-          print('Item $itemIndex');
-        }
-        if (itemIndex == 4) {
-          // Navega a la pantalla "item_2_menu.dart"
+        } else if (itemIndex == 2) {
+          // Navega a la pantalla "Dev.dart"
           Navigator.push(
             context,
             MaterialPageRoute(
               builder: (context) => Clinicas(), // Pantalla de destino
             ),
           );
-        } else {
-          print('Item $itemIndex');
-        }
-        if (itemIndex == 5) {
-          // Navega a la pantalla "item_2_menu.dart"
+        } else if (itemIndex == 3) {
+          // Navega a la pantalla "Planes.dart"
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => Dev(), // Pantalla de destino
+              builder: (context) => Planes(), // Pantalla de destino
             ),
           );
-        } else {
-          print('Item $itemIndex');
-        }
-        if (itemIndex == 6) {
-          // Navega a la pantalla "item_2_menu.dart"
+        } else if (itemIndex == 4) {
+          // Navega a la pantalla "Clinicas.dart"
           Navigator.push(
             context,
             MaterialPageRoute(
@@ -266,7 +229,7 @@ class _DashboardScreenState extends State<DashboardScreen>
           appBar: _buildAppBar(theme),
           body: GridView.count(
             crossAxisCount: 2,
-            children: List.generate(8, (index) {
+            children: List.generate(buttonTitles.length, (index) {
               int itemIndex = index + 1;
               return _buildButton(
                 icon: null,

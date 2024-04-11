@@ -75,13 +75,13 @@ class _Clinicas extends State<Clinicas>
       schedule: '24/7',
     ),
     Clinic(
-      name: 'ABC Camp. Observatorio',
+      name: 'Centro Médico ABC Camp. Observatorio',
       address: 'Álvaro Obregón',
       phone: '55 5230 8000',
       schedule: '24/7',
     ),
-     Clinic(
-      name: 'ABC Camp. Santa Fe',
+    Clinic(
+      name: 'Centro Médico ABC Camp. Santa Fe',
       address: 'Cuajimalpa de Morelos',
       phone: '55 1103 1600',
       schedule: '24/7',
@@ -92,7 +92,7 @@ class _Clinicas extends State<Clinicas>
       phone: '55 5255 9600',
       schedule: '24/7',
     ),
-     Clinic(
+    Clinic(
       name: 'Christus Muguerza Hospital Alta Especialidad',
       address: 'Monterrey',
       phone: '+52 81 8399 3477',
@@ -285,7 +285,7 @@ class _Clinicas extends State<Clinicas>
 
   Widget _buildClinicCard(int index) {
     final Clinic clinic = clinics[index]; // Obtiene la clínica actual
-    
+
     final clinicName = Text(
       clinic.name,
       style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
@@ -321,43 +321,41 @@ class _Clinicas extends State<Clinicas>
   }
 
   Widget _buildMenu(ThemeData theme) {
-    return AnimatedContainer(
-      duration: const Duration(milliseconds: 250),
-      transform: Matrix4.translationValues(_isMenuOpen ? 0 : -200, 0, 0),
-      child: Container(
-        width: 200,
-        color: Colors.white,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            ListTile(
-              title: Text('Option 1'),
-              onTap: () {
-                // Handle Option 1
-              },
+    return Drawer(
+      child: ListView(
+        padding: EdgeInsets.zero,
+        children: <Widget>[
+          DrawerHeader(
+            child: Text('Drawer Header'),
+            decoration: BoxDecoration(
+              color: theme.primaryColor,
             ),
-            ListTile(
-              title: Text('Opcion 3'),
-              onTap: () {
-               // Handle Option 3
-              },
-            ),
-            ListTile(
-              title: Text('Option 3'),
-              onTap: () {
-                // Handle Option 1
-              },
-            ),
-            ListTile(
-              title: Text('Regresar'),
-              onTap: () {
-                // Navegar al dashboard
-                Navigator.pushNamed(context, DashboardScreen.routeName);
-              },
-            ),
-          ],
-        ),
+          ),
+          ListTile(
+            title: Text('Option 1'),
+            onTap: () {
+              // Handle Option 1
+            },
+          ),
+          ListTile(
+            title: Text('Opcion 3'),
+            onTap: () {
+              // Handle Option 3
+            },
+          ),
+          ListTile(
+            title: Text('Option 3'),
+            onTap: () {
+              // Handle Option 1
+            },
+          ),
+          ListTile(
+            title: Text('Regresar'),
+            onTap: () {
+              Navigator.pushNamed(context, DashboardScreen.routeName);
+            },
+          ),
+        ],
       ),
     );
   }
