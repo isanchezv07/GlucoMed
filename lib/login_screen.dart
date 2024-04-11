@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart' show timeDilation;
 import 'package:flutter_login/flutter_login.dart';
@@ -7,11 +8,12 @@ import 'package:glucomed/custom_route.dart';
 import 'package:glucomed/dashboard_screen.dart';
 import 'package:glucomed/users.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:path_provider/path_provider.dart';
 
 class LoginScreen extends StatelessWidget {
   static const routeName = '/auth';
 
-  const LoginScreen({super.key});
+  const LoginScreen({Key? key});
 
   Duration get loginTime => Duration(milliseconds: timeDilation.ceil() * 2250);
 
@@ -27,10 +29,22 @@ class LoginScreen extends StatelessWidget {
     });
   }
 
-  Future<String?> _signupUser(SignupData data) {
-    return Future.delayed(loginTime).then((_) {
+  Future<String?> _signupUser(SignupData data) async {
+    try {
+      final file = await _localFile;
+      final sink = file.openWrite(mode: FileMode.append);
+      sink.write('Name: ${data.name}, ');
+      sink.write('Password: ${data.password}, ');
+      data.additionalSignupData?.forEach((key, value) {
+        sink.write('$key: $value, ');
+      });
+      sink.writeln();
+      await sink.flush();
+      await sink.close();
       return null;
-    });
+    } catch (e) {
+      return 'Failed to sign up';
+    }
   }
 
   Future<String?> _recoverPassword(String phoneNumber) {
@@ -43,6 +57,16 @@ class LoginScreen extends StatelessWidget {
     return Future.delayed(loginTime).then((_) {
       return null;
     });
+  }
+
+  Future<String> get _localPath async {
+    final directory = await getApplicationDocumentsDirectory();
+    return directory.path;
+  }
+
+  Future<File> get _localFile async {
+    final path = await _localPath;
+    return File('$path/users.dart');
   }
 
   @override
@@ -147,7 +171,7 @@ class LoginScreen extends StatelessWidget {
 }
 
 class IntroWidget extends StatelessWidget {
-  const IntroWidget({super.key});
+  const IntroWidget({Key? key});
 
   @override
   Widget build(BuildContext context) {

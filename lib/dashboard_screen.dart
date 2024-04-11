@@ -158,14 +158,14 @@ class _DashboardScreenState extends State<DashboardScreen>
   }
 
   Widget _buildButton({
-    Widget? icon,
+    String? imagePath, // Nueva propiedad para la ruta de la imagen
     required String label,
     required Interval interval,
-    required int itemIndex, // Necesitamos el índice del botón
-    double size = 100.0, // Tamaño predeterminado del botón
+    required int itemIndex,
+    double size = 100.0,
   }) {
     return RoundButton(
-      icon: icon,
+      icon: imagePath != null ? Image.asset(imagePath) : null,
       label: label,
       loadingController: _loadingController,
       interval: Interval(
@@ -173,39 +173,34 @@ class _DashboardScreenState extends State<DashboardScreen>
         interval.end,
         curve: const ElasticOutCurve(0.42),
       ),
-      size: size, // Usa el tamaño definido
+      size: size,
       onPressed: () {
-        // Verifica si el índice del botón es 1
         if (itemIndex == 1) {
-          // Navega a la pantalla "item_2_menu.dart"
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => Configuracion(), // Pantalla de destino
+              builder: (context) => Configuracion(),
             ),
           );
         } else if (itemIndex == 2) {
-          // Navega a la pantalla "Dev.dart"
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => Clinicas(), // Pantalla de destino
+              builder: (context) => Clinicas(),
             ),
           );
         } else if (itemIndex == 3) {
-          // Navega a la pantalla "Planes.dart"
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => Planes(), // Pantalla de destino
+              builder: (context) => Planes(),
             ),
           );
         } else if (itemIndex == 4) {
-          // Navega a la pantalla "Clinicas.dart"
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => Clinicas(), // Pantalla de destino
+              builder: (context) => Clinicas(),
             ),
           );
         } else {
@@ -232,11 +227,11 @@ class _DashboardScreenState extends State<DashboardScreen>
             children: List.generate(buttonTitles.length, (index) {
               int itemIndex = index + 1;
               return _buildButton(
-                icon: null,
+                imagePath: 'assets/images/${buttonTitles[index].toLowerCase()}-image.png', // Ruta de la imagen
                 label: buttonTitles[index],
                 interval: Interval(0.0, 0.5),
                 itemIndex: itemIndex,
-                size: 150.0, // Ajusta el tamaño del botón según sea necesario
+                size: 150.0,
               );
             }),
           ),

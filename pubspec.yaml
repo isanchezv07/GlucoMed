@@ -18,7 +18,7 @@ description: "A new Flutter module project."
 version: 1.0.0+1
 
 environment:
-  sdk: '3.19.5'
+  sdk: '>=3.3.3 <4.0.0'
   flutter: ">=3.16.0"
 
 dependencies:
@@ -57,8 +57,14 @@ flutter:
   uses-material-design: true
   assets:
     - assets/images/ecorp.png
+    - assets/images/avatar.png
     - assets/images/ecorp-lightblue.png
     - assets/images/ecorp-lightgreen.png
+    
+    - assets/images/Clinicas-image.png
+    - assets/images/User-image.png
+    - assets/images/Configuracion-image.png
+    - assets/images/Planes-image.png
 
   fonts:
     - family: OpenSans
