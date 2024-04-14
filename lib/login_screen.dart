@@ -91,7 +91,7 @@ class LoginScreen extends StatelessWidget {
           id: 'general-term',
           mandatory: true,
           text: 'Term of services',
-          linkUrl: '',
+          linkUrl: 'https://github.com/isanchezv07/GlucoMed?tab=readme-ov-file',
         ),
       ],
       additionalSignupFields: [
