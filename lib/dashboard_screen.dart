@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_login/theme.dart';
 import 'package:flutter_login/widgets.dart';
+import 'package:glucomed/about_us.dart';
 import 'package:glucomed/clinicas.dart';
 import 'package:glucomed/configuracion.dart';
 import 'package:glucomed/constants.dart';
@@ -304,6 +305,15 @@ class _DashboardScreenState extends State<DashboardScreen>
                           Navigator.push(
                             context,
                             MaterialPageRoute(builder: (context) => Clinicas()),
+                          );
+                        },
+                      ),
+                      ListTile(
+                        title: Text('About Us'),
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => AboutUs()),
                           );
                         },
                       ),

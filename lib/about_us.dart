@@ -1,25 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_login/theme.dart';
 import 'package:flutter_login/widgets.dart';
-import 'package:glucomed/configuracion.dart';
+import 'package:glucomed/clinicas.dart';
 import 'package:glucomed/constants.dart';
 import 'package:glucomed/dashboard_screen.dart'; // Importa la pantalla del dashboard
 import 'package:glucomed/planes.dart';
 import 'package:glucomed/transition_route_observer.dart';
 import 'package:glucomed/user_conf.dart';
 import 'package:glucomed/widgets/fade_in.dart';
+import 'package:glucomed/widgets/round_button.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-class Clinicas extends StatefulWidget {
+class AboutUs extends StatefulWidget {
   static const routeName = '/dashboard';
 
-  const Clinicas({super.key});
+  const AboutUs({super.key});
 
   @override
-  State<Clinicas> createState() => _Clinicas();
+  State<AboutUs> createState() => _AboutUs();
 }
 
-class _Clinicas extends State<Clinicas>
+class _AboutUs extends State<AboutUs>
     with SingleTickerProviderStateMixin, TransitionRouteAware {
   Future<bool> _goToLogin(BuildContext context) {
     return Navigator.of(context)
@@ -190,7 +191,6 @@ class _Clinicas extends State<Clinicas>
                   ],
                 ),
                 _buildMenu(theme),
-                _buildGridButtons(), // Add this line to include the grid of buttons
               ],
             ),
           ),
@@ -213,12 +213,6 @@ class _Clinicas extends State<Clinicas>
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             ListTile(
-              title: Text('Configuracion'),
-              onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => Configuracion()));
-              },
-            ),
-            ListTile(
               title: Text('User'),
               onTap: () {
                 Navigator.push(context, MaterialPageRoute(builder: (context) => User_conf()));
@@ -231,64 +225,21 @@ class _Clinicas extends State<Clinicas>
               },
             ),
             ListTile(
+              title: Text('Clinicas'),
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => Clinicas()));
+              },
+            ),
+            ListTile(
               title: Text('Regresar'),
               onTap: () {
+                // Navegar al dashboard
                 Navigator.pushNamed(context, DashboardScreen.routeName);
               },
             ),
           ],
         ),
       ),
-    );
-  }
-
-  Widget _buildGridButtons() {
-    return Positioned(
-      left: 0,
-      right: 0,
-      top: MediaQuery.of(context).size.height * 0.3, // Adjust this value as needed
-      child: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Column(
-          children: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                _buildGridButton("Button 1"),
-                _buildGridButton("Button 2"),
-                _buildGridButton("Button 3"),
-              ],
-            ),
-            SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                _buildGridButton("Button 4"),
-                _buildGridButton("Button 5"),
-                _buildGridButton("Button 6"),
-              ],
-            ),
-            SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                _buildGridButton("Button 7"),
-                _buildGridButton("Button 8"),
-                _buildGridButton("Button 9"),
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildGridButton(String text) {
-    return ElevatedButton(
-      onPressed: () {
-        // Add functionality for button press
-      },
-      child: Text(text),
     );
   }
 }

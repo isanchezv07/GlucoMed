@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:flutter_login/theme.dart';
 import 'package:flutter_login/widgets.dart';
@@ -13,13 +15,13 @@ import 'package:glucomed/user_conf.dart';
 class Planes extends StatefulWidget {
   static const routeName = '/dashboard';
 
-  const Planes({super.key});
+  const Planes({Key? key}) : super(key: key);
 
   @override
-  State<Planes> createState() => _Planes();
+  State<Planes> createState() => _PlanesState();
 }
 
-class _Planes extends State<Planes>
+class _PlanesState extends State<Planes>
     with SingleTickerProviderStateMixin, TransitionRouteAware {
   Future<bool> _goToLogin(BuildContext context) {
     return Navigator.of(context)
@@ -190,6 +192,7 @@ class _Planes extends State<Planes>
                   ],
                 ),
                 _buildMenu(theme),
+                _buildImageAndText(),
               ],
             ),
           ),
@@ -238,6 +241,39 @@ class _Planes extends State<Planes>
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildImageAndText() {
+    return Positioned(
+      left: 20,
+      top: MediaQuery.of(context).size.height * 0.3, // Adjust this value as needed
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          _buildPhotoAndText(),
+          SizedBox(height: 20),
+          _buildPhotoAndText(),
+          SizedBox(height: 20),
+          _buildPhotoAndText(),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildPhotoAndText() {
+    return Row(
+      children: <Widget>[
+        CircleAvatar(
+          radius: 30,
+          backgroundImage: AssetImage('assets/images/sample_image.jpg'), // Replace with your image asset
+        ),
+        SizedBox(width: 20),
+        Text(
+          'Some Text', // Replace with your text
+          style: TextStyle(fontSize: 18),
+        ),
+      ],
     );
   }
 }
