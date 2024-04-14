@@ -1,23 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_login/theme.dart';
 import 'package:flutter_login/widgets.dart';
+import 'package:glucomed/clinicas.dart';
 import 'package:glucomed/constants.dart';
 import 'package:glucomed/dashboard_screen.dart'; // Importa la pantalla del dashboard
+import 'package:glucomed/planes.dart';
 import 'package:glucomed/transition_route_observer.dart';
 import 'package:glucomed/widgets/fade_in.dart';
-import 'package:glucomed/widgets/round_button.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-class User extends StatefulWidget {
+class User_conf extends StatefulWidget {
   static const routeName = '/dashboard';
 
-  const User({super.key});
+  const User_conf({super.key});
 
   @override
-  State<User> createState() => _User();
+  State<User_conf> createState() => _User();
 }
 
-class _User extends State<User>
+class _User extends State<User_conf>
     with SingleTickerProviderStateMixin, TransitionRouteAware {
   Future<bool> _goToLogin(BuildContext context) {
     return Navigator.of(context)
@@ -87,17 +88,6 @@ class _User extends State<User>
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8.0),
-            child: Hero(
-              tag: Constants.logoTag,
-              child: Image.asset(
-                'assets/images/ecorp.png',
-                filterQuality: FilterQuality.high,
-                height: 30,
-              ),
-            ),
-          ),
           HeroText(
             Constants.appName,
             tag: Constants.titleTag,
@@ -221,27 +211,26 @@ class _User extends State<User>
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             ListTile(
-              title: Text('Option 1'),
+              title: Text('Configuracion'),
               onTap: () {
                 // Handle Option 1
               },
             ),
             ListTile(
-              title: Text('Opcion 3'),
+              title: Text('Planes'),
               onTap: () {
-
+                Navigator.push(context, MaterialPageRoute(builder: (context) => Planes()));
               },
             ),
             ListTile(
-              title: Text('Option 3'),
+              title: Text('Clinicas'),
               onTap: () {
-                // Handle Option 1
+                Navigator.push(context, MaterialPageRoute(builder: (context) => Clinicas()));
               },
             ),
             ListTile(
               title: Text('Regresar'),
               onTap: () {
-                // Navegar al dashboard
                 Navigator.pushNamed(context, DashboardScreen.routeName);
               },
             ),

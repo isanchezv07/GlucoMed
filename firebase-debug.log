@@ -1,0 +1,40 @@
+[debug] [2024-04-12T01:22:17.269Z] ----------------------------------------------------------------------
+[debug] [2024-04-12T01:22:17.270Z] Command:       /usr/local/bin/firebase /Users/isacsanchez/.cache/firebase/tools/lib/node_modules/firebase-tools/lib/bin/firebase projects:create gluco-app --json
+[debug] [2024-04-12T01:22:17.271Z] CLI Version:   13.4.0
+[debug] [2024-04-12T01:22:17.271Z] Platform:      darwin
+[debug] [2024-04-12T01:22:17.272Z] Node Version:  v18.5.0
+[debug] [2024-04-12T01:22:17.273Z] Time:          Thu Apr 11 2024 20:22:17 GMT-0500 (Central Daylight Time)
+[debug] [2024-04-12T01:22:17.273Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2024-04-12T01:22:17.282Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2024-04-12T01:22:17.284Z] > authorizing via signed-in user (glucomed.pretige@gmail.com)
+[debug] [2024-04-12T01:22:17.289Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects [none]
+[debug] [2024-04-12T01:22:17.290Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects {"projectId":"gluco-app","name":"gluco-app"}
+[debug] [2024-04-12T01:22:17.806Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects 409
+[debug] [2024-04-12T01:22:17.809Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects {"error":{"code":409,"message":"Requested entity already exists","status":"ALREADY_EXISTS"}}
+[debug] [2024-04-12T01:22:17.922Z] FirebaseError: HTTP Error: 409, Requested entity already exists
+    at responseToError (/Users/isacsanchez/.cache/firebase/tools/lib/node_modules/firebase-tools/lib/responseToError.js:49:12)
+    at RetryOperation._fn (/Users/isacsanchez/.cache/firebase/tools/lib/node_modules/firebase-tools/lib/apiv2.js:292:77)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+[error] 
+[error] Error: Failed to create project because there is already a project with ID gluco-app. Please try again with a unique project ID.
+[debug] [2024-04-12T01:22:32.500Z] ----------------------------------------------------------------------
+[debug] [2024-04-12T01:22:32.502Z] Command:       /usr/local/bin/firebase /Users/isacsanchez/.cache/firebase/tools/lib/node_modules/firebase-tools/lib/bin/firebase projects:create gluco-app --json
+[debug] [2024-04-12T01:22:32.503Z] CLI Version:   13.4.0
+[debug] [2024-04-12T01:22:32.504Z] Platform:      darwin
+[debug] [2024-04-12T01:22:32.504Z] Node Version:  v18.5.0
+[debug] [2024-04-12T01:22:32.505Z] Time:          Thu Apr 11 2024 20:22:32 GMT-0500 (Central Daylight Time)
+[debug] [2024-04-12T01:22:32.505Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2024-04-12T01:22:32.520Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2024-04-12T01:22:32.522Z] > authorizing via signed-in user (glucomed.pretige@gmail.com)
+[debug] [2024-04-12T01:22:32.528Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects [none]
+[debug] [2024-04-12T01:22:32.530Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects {"projectId":"gluco-app","name":"gluco-app"}
+[debug] [2024-04-12T01:22:32.951Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects 409
+[debug] [2024-04-12T01:22:32.955Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects {"error":{"code":409,"message":"Requested entity already exists","status":"ALREADY_EXISTS"}}
+[debug] [2024-04-12T01:22:33.068Z] FirebaseError: HTTP Error: 409, Requested entity already exists
+    at responseToError (/Users/isacsanchez/.cache/firebase/tools/lib/node_modules/firebase-tools/lib/responseToError.js:49:12)
+    at RetryOperation._fn (/Users/isacsanchez/.cache/firebase/tools/lib/node_modules/firebase-tools/lib/apiv2.js:292:77)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+[error] 
+[error] Error: Failed to create project because there is already a project with ID gluco-app. Please try again with a unique project ID.

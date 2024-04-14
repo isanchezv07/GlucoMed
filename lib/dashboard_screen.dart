@@ -1,20 +1,18 @@
-import 'package:firebase_auth/firebase_auth.dart';
+// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:flutter_login/theme.dart';
 import 'package:flutter_login/widgets.dart';
 import 'package:glucomed/clinicas.dart';
 import 'package:glucomed/configuracion.dart';
 import 'package:glucomed/constants.dart';
-import 'package:glucomed/dev.dart';
+import 'package:glucomed/dashboard_screen.dart'; // Importa la pantalla del dashboard
 import 'package:glucomed/planes.dart';
 import 'package:glucomed/transition_route_observer.dart';
+import 'package:glucomed/user_conf.dart';
 import 'package:glucomed/widgets/fade_in.dart';
 import 'package:glucomed/widgets/round_button.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'item_2_menu.dart'; // Importa la pantalla de destino
-import 'configuracion.dart';
-import 'Dev.dart';
-import 'user.dart';
 
 class DashboardScreen extends StatefulWidget {
   static const routeName = '/dashboard';
@@ -30,7 +28,6 @@ class _DashboardScreenState extends State<DashboardScreen>
   Future<bool> _goToLogin(BuildContext context) {
     return Navigator.of(context)
         .pushReplacementNamed('/auth')
-        // we dont want to pop the screen, just replace it completely
         .then((_) => false);
   }
 
@@ -46,6 +43,9 @@ class _DashboardScreenState extends State<DashboardScreen>
     'Clinicas',
   ];
 
+  bool _isMenuOpen = false; // Estado del menú
+  late Animation<double> _menuAnimation;
+
   @override
   void initState() {
     super.initState();
@@ -59,6 +59,16 @@ class _DashboardScreenState extends State<DashboardScreen>
       CurvedAnimation(
         parent: _loadingController,
         curve: headerAniInterval,
+      ),
+    );
+
+    _menuAnimation = Tween<double>(
+      begin: -200.0,
+      end: 0.0,
+    ).animate(
+      CurvedAnimation(
+        parent: _loadingController,
+        curve: Curves.easeInOut,
       ),
     );
   }
@@ -83,51 +93,34 @@ class _DashboardScreenState extends State<DashboardScreen>
   void didPushAfterTransition() => _loadingController.forward();
 
   AppBar _buildAppBar(ThemeData theme) {
-    final menuBtn = IconButton(
-      color: theme.colorScheme.secondary,
-      icon: const Icon(FontAwesomeIcons.bars),
-      onPressed: () {},
-    );
-    final signOutBtn = IconButton(
-      icon: const Icon(FontAwesomeIcons.rightFromBracket),
-      color: theme.colorScheme.secondary,
-      onPressed: () => _goToLogin(context),
-    );
-    final title = Center(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8.0),
-          ),
-          HeroText(
-            Constants.appName,
-            tag: Constants.titleTag,
-            viewState: ViewState.shrunk,
-            style: LoginThemeHelper.loginTextStyle,
-          ),
-          const SizedBox(width: 20),
-        ],
-      ),
-    );
-
     return AppBar(
-      leading: FadeIn(
-        controller: _loadingController,
-        offset: .3,
-        curve: headerAniInterval,
-        child: menuBtn,
+      leading: IconButton(
+        // Cambia el icono y el onPressed para abrir/cerrar el menú
+        color: theme.colorScheme.secondary,
+        icon: _isMenuOpen ? Icon(Icons.close) : Icon(FontAwesomeIcons.bars),
+        onPressed: () {
+          setState(() {
+            _isMenuOpen = !_isMenuOpen;
+          });
+        },
       ),
-      actions: <Widget>[
-        FadeIn(
-          controller: _loadingController,
-          offset: .3,
-          curve: headerAniInterval,
-          fadeDirection: FadeDirection.endToStart,
-          child: signOutBtn,
+      title: Center(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
+            ),
+            HeroText(
+              Constants.appName,
+              tag: Constants.titleTag,
+              viewState: ViewState.shrunk,
+              style: LoginThemeHelper.loginTextStyle,
+            ),
+            const SizedBox(width: 20),
+          ],
         ),
-      ],
-      title: title,
+      ),
       backgroundColor: theme.primaryColor.withOpacity(.1),
       elevation: 0,
     );
@@ -194,7 +187,7 @@ class _DashboardScreenState extends State<DashboardScreen>
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => User(),
+              builder: (context) =>  User_conf(),
             ),
           );
         } else if (itemIndex == 3) {
@@ -238,19 +231,87 @@ class _DashboardScreenState extends State<DashboardScreen>
       child: SafeArea(
         child: Scaffold(
           appBar: _buildAppBar(theme),
-          body: GridView.count(
-            crossAxisCount: 2,
-            children: List.generate(buttonTitles.length, (index) {
-              int itemIndex = index + 1;
-              return _buildButton(
-                imagePath: buttonImages[index], // Ruta de imagen correspondiente al índice actual
-                label: buttonTitles[index],
-                interval: Interval(0.0, 0.5),
-                itemIndex: itemIndex,
-                size: 150.0,
-                imageSize: 120.0, // Tamaño de la imagen personalizado
-              );
-            }),
+          body: Stack(
+            children: [
+              // Contenido principal de la pantalla
+              GridView.count(
+                crossAxisCount: 2,
+                children: List.generate(buttonTitles.length, (index) {
+                  int itemIndex = index + 1;
+                  return _buildButton(
+                    imagePath: buttonImages[index], // Ruta de imagen correspondiente al índice actual
+                    label: buttonTitles[index],
+                    interval: Interval(0.0, 0.5),
+                    itemIndex: itemIndex,
+                    size: 150.0,
+                    imageSize: 120.0, // Tamaño de la imagen personalizado
+                  );
+                }),
+              ),
+              // Menú desplegable animado
+              AnimatedPositioned(
+                duration: Duration(milliseconds: 250),
+                top: 0,
+                left: _isMenuOpen ? 0 : -200, // Oculta el menú fuera de la pantalla
+                child: Container(
+                  width: 200, // Ancho del menú
+                  height: MediaQuery.of(context).size.height, // Altura igual al alto de la pantalla
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black12,
+                        blurRadius: 5,
+                        spreadRadius: 2,
+                        offset: Offset(0, 0),
+                      ),
+                    ],
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Contenido del menú
+                      ListTile(
+                        title: Text('Configuración'),
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => Configuracion()),
+                          );
+                        },
+                      ),
+                      ListTile(
+                        title: Text('User'),
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => User_conf()),
+                          );
+                        },
+                      ),
+                      ListTile(
+                        title: Text('Planes'),
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => Planes()),
+                          );
+                        },
+                      ),
+                      ListTile(
+                        title: Text('Clínicas'),
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => Clinicas()),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
       ),
