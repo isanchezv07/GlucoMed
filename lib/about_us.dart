@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_login/theme.dart';
 import 'package:flutter_login/widgets.dart';
 import 'package:glucomed/clinicas.dart';
+import 'package:glucomed/configuracion.dart';
 import 'package:glucomed/constants.dart';
 import 'package:glucomed/dashboard_screen.dart'; // Importa la pantalla del dashboard
 import 'package:glucomed/planes.dart';
@@ -212,6 +213,12 @@ class _AboutUs extends State<AboutUs>
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            ListTile(
+              title: Text('Configuracion'),
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => Configuracion()));
+              },
+            ),
             ListTile(
               title: Text('User'),
               onTap: () {
