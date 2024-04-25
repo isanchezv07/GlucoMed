@@ -94,6 +94,11 @@ class _DashboardScreenState extends State<DashboardScreen>
   void didPushAfterTransition() => _loadingController.forward();
 
   AppBar _buildAppBar(ThemeData theme) {
+     final signOutBtn = IconButton(
+      icon: const Icon(FontAwesomeIcons.rightFromBracket),
+      color: theme.colorScheme.secondary,
+      onPressed: () => _goToLogin(context),
+    );
     return AppBar(
       leading: IconButton(
         // Cambia el icono y el onPressed para abrir/cerrar el menú
@@ -122,6 +127,15 @@ class _DashboardScreenState extends State<DashboardScreen>
           ],
         ),
       ),
+      actions: <Widget>[
+        FadeIn(
+          controller: _loadingController,
+          offset: .3,
+          curve: headerAniInterval,
+          fadeDirection: FadeDirection.endToStart,
+          child: signOutBtn,
+        ),
+      ],
       backgroundColor: theme.primaryColor.withOpacity(.1),
       elevation: 0,
     );
@@ -224,11 +238,8 @@ class _DashboardScreenState extends State<DashboardScreen>
       'assets/images/Clinicas-image.png',
     ];
 
-    return WillPopScope(
-      onWillPop: () async {
-        await _goToLogin(context);
-        return false;
-      },
+    return PopScope(      
+      onPopInvoked: (hasPopped) => hasPopped ? _goToLogin(context) : null,
       child: SafeArea(
         child: Scaffold(
           appBar: _buildAppBar(theme),

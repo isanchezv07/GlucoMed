@@ -1,0 +1,51 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Presentacion</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+        #pdf-container {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+    <!-- Contenedor para el PDF -->
+    <div id="pdf-container"></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
+    <script>
+        // URL del PDF
+        var pdfUrl = 'files/shark-tank.pdf';
+
+        // Función para cargar y mostrar el PDF
+        function showPdf() {
+            // Obtener el contenedor del PDF
+            var container = document.getElementById('pdf-container');
+
+            // Crear un elemento <iframe> para mostrar el PDF
+            var iframe = document.createElement('iframe');
+            iframe.src = pdfUrl;
+            iframe.width = '100%';
+            iframe.height = '100%';
+            iframe.style.border = 'none';
+
+            // Agregar el iframe al contenedor
+            container.appendChild(iframe);
+        }
+
+        // Llamar a la función para mostrar el PDF cuando se cargue la página
+        window.onload = showPdf;
+    </script>
+</body>
+</html>

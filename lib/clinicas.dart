@@ -286,7 +286,7 @@ class _Clinicas extends State<Clinicas>
   Widget _buildGridButton(String text) {
     return ElevatedButton(
       onPressed: () {
-        // Add functionality for button press
+        debugPrint('Botton: ');
       },
       child: Text(text),
     );

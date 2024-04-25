@@ -266,7 +266,7 @@ class _PlanesState extends State<Planes>
       children: <Widget>[
         CircleAvatar(
           radius: 30,
-          backgroundImage: AssetImage('assets/images/sample_image.jpg'), // Replace with your image asset
+          backgroundImage: AssetImage('assets/images/avatar.png'), // Replace with your image asset
         ),
         SizedBox(width: 20),
         Text(
