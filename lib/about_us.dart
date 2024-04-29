@@ -9,13 +9,14 @@ import 'package:glucomed/planes.dart';
 import 'package:glucomed/transition_route_observer.dart';
 import 'package:glucomed/user_conf.dart';
 import 'package:glucomed/widgets/fade_in.dart';
-import 'package:glucomed/widgets/round_button.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:googleapis/keep/v1.dart';
+import 'package:glucomed/users.dart';
 
 class AboutUs extends StatefulWidget {
   static const routeName = '/dashboard';
 
-  const AboutUs({super.key});
+  const AboutUs({Key? key}) : super(key: key);
 
   @override
   State<AboutUs> createState() => _AboutUs();
@@ -101,7 +102,7 @@ class _AboutUs extends State<AboutUs>
         ],
       ),
     );
-
+  
     return AppBar(
       leading: FadeIn(
         controller: _loadingController,
@@ -150,6 +151,54 @@ class _AboutUs extends State<AboutUs>
     );
   }
 
+  Widget _buildCenterTextBox() {
+    return Positioned(
+      left: 0,
+      right: 0,
+      top: 0,
+      bottom: 0,
+      child: Center(
+        child: Container(
+          width: 300,
+          padding: EdgeInsets.all(20),
+          decoration: BoxDecoration(
+            color: Colors.grey.withOpacity(0.5),
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+              Text(
+                'Para clínicas y hospitales, ofrecemos membresías que les permiten anunciarse en nuestra plataforma, llegar a una audiencia comprometida y acceder a datos valiosos sobre la interacción de los usuarios con sus servicios.',
+                style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+              ),
+              SizedBox(height: 10),
+              Text('Membresía Mensual GlucoMed Connect Prestige:'),
+              Text('Precio: 49.99 por mes'),
+              Text(
+                'Características: ',
+                style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+              ),
+              Text('Destaque en la plataforma GlucoMed como proveedor preferido.'),
+              Text('Acceso a estadísticas detalladas sobre la interacción de los usuarios con su perfil.'),
+              Text('Oportunidades de promoción exclusivas a través de notificaciones push y banners en la aplicación.'),
+              Text('Soporte dedicado para maximizar el retorno de inversión en la plataforma.'),
+               Text(
+                'Membresía Anual GlucoMed Connect Prestige: ',
+                style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+              ),
+              Text('Precio: 499.99 por año (equivalente a dos meses gratis)'),
+              Text('Características: Todas las características de la membresía mensual, con un ahorro adicional al optar por la membresía anual.'),
+              SizedBox(height: 10),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -172,26 +221,28 @@ class _AboutUs extends State<AboutUs>
                       flex: 2,
                       child: _buildHeader(theme),
                     ),
-                    Expanded(
-                      flex: 8,
-                      child: ShaderMask(
-                        shaderCallback: (Rect bounds) {
-                          return LinearGradient(
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
-                            colors: <Color>[
-                              Colors.deepPurpleAccent.shade100,
-                              Colors.deepPurple.shade100,
-                              Colors.deepPurple.shade100,
-                              Colors.deepPurple.shade100,
-                            ],
-                          ).createShader(bounds);
-                        },
+                    if (!_isMenuOpen) // Agregar la tabla solo si el menú está cerrado
+                      Expanded(
+                        flex: 6, // Reducido a 6 para dar espacio a la tabla
+                        child: ShaderMask(
+                          shaderCallback: (Rect bounds) {
+                            return LinearGradient(
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                              colors: <Color>[
+                                Colors.deepPurpleAccent.shade100,
+                                Colors.deepPurple.shade100,
+                                Colors.deepPurple.shade100,
+                                Colors.deepPurple.shade100,
+                              ],
+                            ).createShader(bounds);
+                          },
+                        ),
                       ),
-                    ),
                   ],
                 ),
                 _buildMenu(theme),
+                if (!_isMenuOpen) _buildCenterTextBox(), // Solo mostrar el texto cuando el menú está cerrado
               ],
             ),
           ),
@@ -226,12 +277,6 @@ class _AboutUs extends State<AboutUs>
               },
             ),
             ListTile(
-              title: Text('Planes'),
-              onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => Planes()));
-              },
-            ),
-            ListTile(
               title: Text('Clinicas'),
               onTap: () {
                 Navigator.push(context, MaterialPageRoute(builder: (context) => Clinicas()));
@@ -240,7 +285,6 @@ class _AboutUs extends State<AboutUs>
             ListTile(
               title: Text('Regresar'),
               onTap: () {
-                // Navegar al dashboard
                 Navigator.pushNamed(context, DashboardScreen.routeName);
               },
             ),
