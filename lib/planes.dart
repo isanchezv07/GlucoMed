@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
 import 'package:flutter_login/theme.dart';
@@ -154,47 +154,42 @@ class _PlanesState extends State<Planes>
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return PopScope(
-      onPopInvoked: (hasPopped) => hasPopped ? _goToLogin(context) : null,
+    return WillPopScope(
+      onWillPop: () => _goToLogin(context),
       child: SafeArea(
         child: Scaffold(
           appBar: _buildAppBar(theme),
-          body: Container(
-            width: double.infinity,
-            height: double.infinity,
-            color: theme.primaryColor.withOpacity(.1),
-            child: Stack(
-              children: <Widget>[
-                Column(
-                  children: <Widget>[
-                    const SizedBox(height: 40),
-                    Expanded(
-                      flex: 2,
-                      child: _buildHeader(theme),
+          body: Stack(
+            children: <Widget>[
+              Column(
+                children: <Widget>[
+                  const SizedBox(height: 40),
+                  Expanded(
+                    flex: 2,
+                    child: _buildHeader(theme),
+                  ),
+                  Expanded(
+                    flex: 8,
+                    child: ShaderMask(
+                      shaderCallback: (Rect bounds) {
+                        return LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: <Color>[
+                            Colors.deepPurpleAccent.shade100,
+                            Colors.deepPurple.shade100,
+                            Colors.deepPurple.shade100,
+                            Colors.deepPurple.shade100,
+                          ],
+                        ).createShader(bounds);
+                      },
                     ),
-                    Expanded(
-                      flex: 8,
-                      child: ShaderMask(
-                        shaderCallback: (Rect bounds) {
-                          return LinearGradient(
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
-                            colors: <Color>[
-                              Colors.deepPurpleAccent.shade100,
-                              Colors.deepPurple.shade100,
-                              Colors.deepPurple.shade100,
-                              Colors.deepPurple.shade100,
-                            ],
-                          ).createShader(bounds);
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-                _buildMenu(theme),
-                _buildImageAndText(),
-              ],
-            ),
+                  ),
+                ],
+              ),
+              _buildMenu(theme),
+              if (!_isMenuOpen) _buildCenterTextBox(), // Solo mostrar el texto cuando el menú está cerrado
+            ],
           ),
         ),
       ),
@@ -244,36 +239,45 @@ class _PlanesState extends State<Planes>
     );
   }
 
-  Widget _buildImageAndText() {
-    return Positioned(
-      left: 20,
-      top: MediaQuery.of(context).size.height * 0.3, // Adjust this value as needed
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          _buildPhotoAndText(),
-          SizedBox(height: 20),
-          _buildPhotoAndText(),
-          SizedBox(height: 20),
-          _buildPhotoAndText(),
-        ],
+  Widget _buildCenterTextBox() {
+    return Center(
+      child: Container(
+        width: 300,
+        padding: EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          color: Colors.grey.withOpacity(0.5),
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Para clínicas y hospitales, ofrecemos membresías que les permiten anunciarse en nuestra plataforma, llegar a una audiencia comprometida y acceder a datos valiosos sobre la interacción de los usuarios con sus servicios.',
+                style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+              ),
+              SizedBox(height: 10),
+              Text('Membresía Mensual GlucoMed Connect Prestige:'),
+              Text('Precio: 49.99 por mes'),
+              Text(
+                'Características: ',
+                style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+              ),
+              Text('Destaque en la plataforma GlucoMed como proveedor preferido.'),
+              Text('Acceso a estadísticas detalladas sobre la interacción de los usuarios con su perfil.'),
+              Text('Oportunidades de promoción exclusivas a través de notificaciones push y banners en la aplicación.'),
+              Text('Soporte dedicado para maximizar el retorno de inversión en la plataforma.'),
+               Text(
+                'Membresía Anual GlucoMed Connect Prestige: ',
+                style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+              ),
+              Text('Precio: 499.99 por año (equivalente a dos meses gratis)'),
+              Text('Características: Todas las características de la membresía mensual, con un ahorro adicional al optar por la membresía anual.'),
+              SizedBox(height: 10),
+            ],
+          ),
+        ),
       ),
-    );
-  }
-
-  Widget _buildPhotoAndText() {
-    return Row(
-      children: <Widget>[
-        CircleAvatar(
-          radius: 30,
-          backgroundImage: AssetImage('assets/images/avatar.png'), // Replace with your image asset
-        ),
-        SizedBox(width: 20),
-        Text(
-          'Some Text', // Replace with your text
-          style: TextStyle(fontSize: 18),
-        ),
-      ],
     );
   }
 }

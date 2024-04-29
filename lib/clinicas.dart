@@ -189,8 +189,7 @@ class _Clinicas extends State<Clinicas>
                     ),
                   ],
                 ),
-                _buildMenu(theme),
-                _buildGridButtons(), // Add this line to include the grid of buttons
+                _buildMenu(theme), // Add this line to include the grid of buttons
               ],
             ),
           ),
@@ -235,47 +234,6 @@ class _Clinicas extends State<Clinicas>
               onTap: () {
                 Navigator.pushNamed(context, DashboardScreen.routeName);
               },
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildGridButtons() {
-    return Positioned(
-      left: 0,
-      right: 0,
-      top: MediaQuery.of(context).size.height * 0.3, // Adjust this value as needed
-      child: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Column(
-          children: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                _buildGridButton("Button 1"),
-                _buildGridButton("Button 2"),
-                _buildGridButton("Button 3"),
-              ],
-            ),
-            SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                _buildGridButton("Button 4"),
-                _buildGridButton("Button 5"),
-                _buildGridButton("Button 6"),
-              ],
-            ),
-            SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                _buildGridButton("Button 7"),
-                _buildGridButton("Button 8"),
-                _buildGridButton("Button 9"),
-              ],
             ),
           ],
         ),

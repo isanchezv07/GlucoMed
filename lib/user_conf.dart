@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_login/theme.dart';
 import 'package:flutter_login/widgets.dart';
 import 'package:glucomed/clinicas.dart';
+import 'package:glucomed/configuracion.dart';
 import 'package:glucomed/constants.dart';
 import 'package:glucomed/dashboard_screen.dart'; // Importa la pantalla del dashboard
 import 'package:glucomed/planes.dart';
@@ -12,13 +13,13 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 class User_conf extends StatefulWidget {
   static const routeName = '/dashboard';
 
-  const User_conf({super.key});
+  const User_conf({Key? key}) : super(key: key);
 
   @override
-  State<User_conf> createState() => _User();
+  State<User_conf> createState() => _UserState();
 }
 
-class _User extends State<User_conf>
+class _UserState extends State<User_conf>
     with SingleTickerProviderStateMixin, TransitionRouteAware {
   Future<bool> _goToLogin(BuildContext context) {
     return Navigator.of(context)
@@ -98,7 +99,7 @@ class _User extends State<User_conf>
         ],
       ),
     );
-
+  
     return AppBar(
       leading: FadeIn(
         controller: _loadingController,
@@ -147,6 +148,64 @@ class _User extends State<User_conf>
     );
   }
 
+  Widget _buildCenterTextBox() {
+    return Positioned(
+      left: 0,
+      right: 0,
+      top: 0,
+      bottom: 0,
+      child: Center(
+        child: Container(
+          width: 300,
+          padding: EdgeInsets.all(20),
+          decoration: BoxDecoration(
+            color: Colors.grey.withOpacity(0.5),
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Historial Clínico GlucoMed',
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+                SizedBox(height: 10),
+                Text('Número de Historia: 1'),
+                Text('Nombre: Isac'),
+                Text('Apellido: Vargas Sánchez'),
+                Text('Edad: 17        Sexo: M'),
+                Text('Ocupación: Estudiante de Preparatoria'),
+                Text('Fecha de nacimiento: 12/04/2007'),
+                Text('Estado Civil: Soltero'),
+                Text('Nacionalidad: Mexicana'),
+                Text('Residencia Actual: Tlapan'),
+                Text('Residencia Anterior: Tlalpan'),
+                Text('Grado de instrucción: Primario'),
+                Text('Fecha de interacción: 28/04/2024'),
+                Text('Procedencia: nula'),
+                SizedBox(height: 10),
+                Text(
+                  'Motivo de consulta',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                Text('Consulta para chequeo general de Diabetes'),
+                SizedBox(height: 10),
+                Text(
+                  'Enfermedad Actual',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                Text(
+                  'Paciente de sexo masculino con 17 años de edad, con antecedentes clínicos de diabetes, padece de diabetes tipo 1.',
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -169,26 +228,28 @@ class _User extends State<User_conf>
                       flex: 2,
                       child: _buildHeader(theme),
                     ),
-                    Expanded(
-                      flex: 8,
-                      child: ShaderMask(
-                        shaderCallback: (Rect bounds) {
-                          return LinearGradient(
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
-                            colors: <Color>[
-                              Colors.deepPurpleAccent.shade100,
-                              Colors.deepPurple.shade100,
-                              Colors.deepPurple.shade100,
-                              Colors.deepPurple.shade100,
-                            ],
-                          ).createShader(bounds);
-                        },
+                    if (!_isMenuOpen) // Agregar la tabla solo si el menú está cerrado
+                      Expanded(
+                        flex: 6, // Reducido a 6 para dar espacio a la tabla
+                        child: ShaderMask(
+                          shaderCallback: (Rect bounds) {
+                            return LinearGradient(
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                              colors: <Color>[
+                                Colors.deepPurpleAccent.shade100,
+                                Colors.deepPurple.shade100,
+                                Colors.deepPurple.shade100,
+                                Colors.deepPurple.shade100,
+                              ],
+                            ).createShader(bounds);
+                          },
+                        ),
                       ),
-                    ),
                   ],
                 ),
                 _buildMenu(theme),
+                if (!_isMenuOpen) _buildCenterTextBox(), // Solo mostrar el texto cuando el menú está cerrado
               ],
             ),
           ),
@@ -213,7 +274,7 @@ class _User extends State<User_conf>
             ListTile(
               title: Text('Configuracion'),
               onTap: () {
-                // Handle Option 1
+                Navigator.push(context, MaterialPageRoute(builder: (context) => Configuracion()));
               },
             ),
             ListTile(
