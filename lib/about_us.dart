@@ -169,28 +169,27 @@ class _AboutUs extends State<AboutUs>
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-              Text(
-                'Para clínicas y hospitales, ofrecemos membresías que les permiten anunciarse en nuestra plataforma, llegar a una audiencia comprometida y acceder a datos valiosos sobre la interacción de los usuarios con sus servicios.',
-                style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-              ),
               SizedBox(height: 10),
-              Text('Membresía Mensual GlucoMed Connect Prestige:'),
-              Text('Precio: 49.99 por mes'),
               Text(
-                'Características: ',
+                'Isac Sanchez Vargas:  ',
                 style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
               ),
-              Text('Destaque en la plataforma GlucoMed como proveedor preferido.'),
-              Text('Acceso a estadísticas detalladas sobre la interacción de los usuarios con su perfil.'),
-              Text('Oportunidades de promoción exclusivas a través de notificaciones push y banners en la aplicación.'),
-              Text('Soporte dedicado para maximizar el retorno de inversión en la plataforma.'),
+              Text('Programador, de la app y director del Area de progrmación de la app GlucoMed'),
+              Text(
+                'Ricardo Benítez:  ',
+                style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+              ),
+              Text('Lider en inovvación y transformación estrategica de GlucoMed y CEO'),
+              Text(
+                'Diego:  ',
+                style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+              ),
+              Text('Lider en finanzas'),
                Text(
-                'Membresía Anual GlucoMed Connect Prestige: ',
+                'Fernando:  ',
                 style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
               ),
-              Text('Precio: 499.99 por año (equivalente a dos meses gratis)'),
-              Text('Características: Todas las características de la membresía mensual, con un ahorro adicional al optar por la membresía anual.'),
-              SizedBox(height: 10),
+              Text('Lider de marketing'),
               ],
             ),
           ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_login/theme.dart';
 import 'package:flutter_login/widgets.dart';
+import 'package:glucomed/clinicas.dart';
 import 'package:glucomed/configuracion.dart';
 import 'package:glucomed/constants.dart';
 import 'package:glucomed/dashboard_screen.dart'; // Importa la pantalla del dashboard
@@ -9,11 +10,13 @@ import 'package:glucomed/transition_route_observer.dart';
 import 'package:glucomed/user_conf.dart';
 import 'package:glucomed/widgets/fade_in.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:googleapis/keep/v1.dart';
+import 'package:glucomed/users.dart';
 
 class Clinicas extends StatefulWidget {
   static const routeName = '/dashboard';
 
-  const Clinicas({super.key});
+  const Clinicas({Key? key}) : super(key: key);
 
   @override
   State<Clinicas> createState() => _Clinicas();
@@ -99,7 +102,7 @@ class _Clinicas extends State<Clinicas>
         ],
       ),
     );
-
+  
     return AppBar(
       leading: FadeIn(
         controller: _loadingController,
@@ -148,6 +151,52 @@ class _Clinicas extends State<Clinicas>
     );
   }
 
+  Widget _buildCenterTextBox() {
+    return Positioned(
+      left: 0,
+      right: 0,
+      top: 0,
+      bottom: 0,
+      child: Center(
+        child: Container(
+          width: 300,
+          padding: EdgeInsets.all(20),
+          decoration: BoxDecoration(
+            color: Colors.grey.withOpacity(0.5),
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+              Text(
+                'Hospitales',
+                style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+              ),
+              SizedBox(height: 10),
+              Text('Hospital Endocrinológico Metropolitano'),
+              Text('Centro Médico de Diabetes Integral'),
+              Text('Hospital Cardiológico Avanzado'),
+              Text('Clínica de Diabetes y Nutrición Excelencia'),
+              Text('Hospital Especializado en Enfermedades Crónicas'),
+               Text(
+                'Clínicas Especializadas: ',
+                style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+              ),
+              Text('Clínica DiabetesCare'),
+              Text('Centro de Endocrinología Avanzada'),
+              Text('Clínica de Nutrición y Diabetes'),
+              Text('Consultorio Endocrino Innovador'),
+              Text('Clínica de Diabetes y Bienestar'),
+              SizedBox(height: 10),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -170,26 +219,28 @@ class _Clinicas extends State<Clinicas>
                       flex: 2,
                       child: _buildHeader(theme),
                     ),
-                    Expanded(
-                      flex: 8,
-                      child: ShaderMask(
-                        shaderCallback: (Rect bounds) {
-                          return LinearGradient(
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
-                            colors: <Color>[
-                              Colors.deepPurpleAccent.shade100,
-                              Colors.deepPurple.shade100,
-                              Colors.deepPurple.shade100,
-                              Colors.deepPurple.shade100,
-                            ],
-                          ).createShader(bounds);
-                        },
+                    if (!_isMenuOpen) // Agregar la tabla solo si el menú está cerrado
+                      Expanded(
+                        flex: 6, // Reducido a 6 para dar espacio a la tabla
+                        child: ShaderMask(
+                          shaderCallback: (Rect bounds) {
+                            return LinearGradient(
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                              colors: <Color>[
+                                Colors.deepPurpleAccent.shade100,
+                                Colors.deepPurple.shade100,
+                                Colors.deepPurple.shade100,
+                                Colors.deepPurple.shade100,
+                              ],
+                            ).createShader(bounds);
+                          },
+                        ),
                       ),
-                    ),
                   ],
                 ),
-                _buildMenu(theme), // Add this line to include the grid of buttons
+                _buildMenu(theme),
+                if (!_isMenuOpen) _buildCenterTextBox(), // Solo mostrar el texto cuando el menú está cerrado
               ],
             ),
           ),
@@ -226,7 +277,7 @@ class _Clinicas extends State<Clinicas>
             ListTile(
               title: Text('Planes'),
               onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => Planes()));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => Clinicas()));
               },
             ),
             ListTile(
@@ -238,15 +289,6 @@ class _Clinicas extends State<Clinicas>
           ],
         ),
       ),
-    );
-  }
-
-  Widget _buildGridButton(String text) {
-    return ElevatedButton(
-      onPressed: () {
-        debugPrint('Botton: ');
-      },
-      child: Text(text),
     );
   }
 }
